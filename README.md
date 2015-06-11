@@ -1,7 +1,10 @@
 # pymicro
 Microservice-based sample application written in Python
 
-This is a very rudimentary microservice image based on python's bottle.py, using zookeeper for service discovery.
+This is a very rudimentary microservice-based application written using python's bottle.py. It uses zookeeper for service discovery. The diagram below shows the high level structure of the application and its component microservices. If one or more services are not present, the subtree associated with it will not be called. Neither the server code (server.py) nor the service discovery code (discovery.py) is optimized. The service discovery code uses the python Kazoo client for zookeeper.
+
+![alt tag](https://raw.github.com/rshriram/pymicro/master/application-topology.png)
+
 There is a docker image associated with this service, hosted on the docker hub. This repository holds the source files related to this application.
 
 Without Docker
@@ -32,5 +35,4 @@ For my own convenience, I packaged zookeeper in a docker container and run it li
 
 `curl -o - http://127.0.0.1:9080/bottle/all/view`
 
-You should receive a collated response from master, that contains responses from services A, B and C and their sub-services
 
