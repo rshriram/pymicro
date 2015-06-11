@@ -24,6 +24,10 @@ Start the microservices specifying zookeeper location and the service name. The 
  
 `docker run -d -e SERVICE_NAME=serviceA -e ZOOKEEPER=host:2181 rshriram/pymicro`
 
+For my own convenience, I packaged zookeeper in a docker container and run it like this:
+
+`docker run -d rshriram/zookeeper`
+
 **Testing**
 
 `curl -o - http://127.0.0.1:9080/bottle/all/view`
