@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "starting kafka"
-kafka=`docker run -d -p 2181:2181 -p 9092:9092 --name=kafka spotify/kafka`
+kafka=`docker run -d -p 2181:2181 -p 9092:9092 --name=kafka -e ADVERTISED_HOST=172.17.42.1 -e ADVERTISED_PORT=9092 spotify/kafka`
 sleep 1
 kafkaip=`docker inspect ${kafka}|grep -i IPAddress|tr -d ' ",'|cut -d ':' -f2`
 kafkabroker="${kafkaip}:9092"
