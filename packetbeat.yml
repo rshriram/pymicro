@@ -1,0 +1,15 @@
+agent:
+ ##DO NOT REMOVE THIS FIELD. PB segfaults otherwise
+ name:topology-agent
+interfaces:
+ device: any
+ type: af_packet
+ filter: "tcp"
+protocols:
+  http:
+    ports: [80,9443,9080,8080]
+output:
+  kafka:
+    enabled: true
+    host: "kafka:9092"
+    topic: packetbeat
