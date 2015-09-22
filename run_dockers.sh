@@ -1,15 +1,15 @@
 #!/bin/bash
+DOCKER0=172.17.42.1
+KAFKA_BASE=../kafka_2.10-0.8.2.0
 echo "starting kafka"
-kafka=`docker run -d -p 2181:2181 -p 9092:9092 --name=kafka -e ADVERTISED_HOST=172.17.42.1 -e ADVERTISED_PORT=9092 spotify/kafka`
-sleep 1
-kafkaip=`docker inspect ${kafka}|grep -i IPAddress|tr -d ' ",'|cut -d ':' -f2`
+kafka=`docker run -d -p 2181:2181 -p 9092:9092 --name=kafka -e ADVERTISED_HOST=${DOCKER0} -e ADVERTISED_PORT=9092 spotify/kafka`
+sleep 5
+kafkaip=`docker inspect ${kafka}|grep -iw IPAddress|tr -d ' ",'|cut -d ':' -f2`
 kafkabroker="${kafkaip}:9092"
 kafkatopic="packetbeat"
 zoostr="${kafkaip}:2181"
-pushd ../kafka_2.10-0.8.2.0/
-bin/kafka-topics.sh --zookeeper ${kafkaip}:2181 --create --replication-factor 1 --partition 1 --topic ${kafkatopic}
-popd
-
+${KAFKA_BASE}/bin/kafka-topics.sh --zookeeper ${DOCKER0}:2181 --create --replication-factor 1 --partitions 1 --topic ${kafkatopic}
+sleep 3
 docker run -d --name=view -e ZOOKEEPER=${zoostr} -e SERVICE_NAME=view -e PACKETBEAT_KAFKA_BROKERS=${kafkabroker} -e PACKETBEAT_KAFKA_TOPIC=${kafkatopic} -p 9180:9080 rshriram/pymicro
 sleep 1
 echo "started view service"
